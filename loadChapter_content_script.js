@@ -19,21 +19,18 @@ if (mangaBoxExist){
 
     var imageList = []
 
-    c = document.createElement("canvas")
-    ctx = c.getContext("2d")
-    c.width = 836
-    c.height= 1200
-    document.body.append(c)
-
-    c2 = document.createElement("canvas")
-    ctx2 = c2.getContext("2d")
-    c2.width = 836
-    c2.height= 1200
-    document.body.append(c2)
-
     let originImage = document.querySelector("#mangaFile")
     let width = originImage.clientWidth
     let height = originImage.clientHeight
+    let chapterTitle = document.querySelector("h2").innerHTML
+
+    c = document.createElement("canvas")
+    ctx = c.getContext("2d")
+    c.width = width
+    c.height= height
+    document.body.append(c)
+
+
     let newImg = new Image();
     let result_data
     newImg.crossOrigin = '';
@@ -59,10 +56,11 @@ if (mangaBoxExist){
                 ctx.drawImage(this, 0, 0, width, height);
                 datablob = await c.toDataURL("image/jpeg", 0.5)
                 imageList.push(datablob)
+                next.click()
             };
             newImg.src = originImage.src
 
-            next.click()
+
             yield i
         }
     }// nextPageGenerator
@@ -81,7 +79,7 @@ if (mangaBoxExist){
             clearInterval(interval)
             console.log("interval is cleared")
             chrome.runtime.sendMessage({
-                "todo":"closeChapterTabRequest", "imageList": imageList, "chapterName": chapterName, "mangaId": mangaId
+                "todo":"closeChapterTabRequest", "imageList": {[chapterName]:imageList}, "mangaId": mangaId
             }, function(){
                 console.log("send message succuess");
             })
