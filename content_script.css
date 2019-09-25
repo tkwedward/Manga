@@ -1,0 +1,31 @@
+.overlay{
+    width: 90%;
+    height: 90%;
+    position: fixed;
+    top: 5%;
+    left: 5%;
+    z-index: 999;
+    background: bisque;
+    /* display: none; */
+}
+
+
+.normal{
+    width: 500px;
+    background: pink;
+}
+
+.special{
+    width: 500px;
+    background: yellow;
+}
+
+.chapter-button, .control-button{
+    margin: 10px;
+    width: 100px;
+    position: relative;
+}
+
+.highlight{
+    background: yellow;
+}

@@ -1,0 +1,65 @@
+img {
+    width:100%
+}
+
+hr {
+    margin: 50px;
+}
+
+.hidden{
+    display: none
+}
+
+
+$background-size: 40px;
+.closeButton{
+    position: fixed;
+    width:$background-size;
+    height: $background-size;
+    z-index: 10;
+    background: blue;
+    left: 95%;
+    top:2.5%;
+    background-image: url("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT2l88EHUkM-DwP7WFfAxOKysL6FS5jNGQ-KG1hZ4m_NPjyZ88O");
+    background-size: $background-size $background-size;
+}
+
+
+#overlay{
+    width: 98%;
+    height: 98%;
+    background: yellow;
+    position: fixed;
+    top: 1%;
+    left: 1%;
+    overflow-y: scroll;
+}
+
+
+.chapterButtonWrapper{
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    width: 80%;
+    margin:auto;
+}
+
+.chapterButton{
+    display: inline-grid;
+    background: rgb(3, 127, 252);
+    width: 40px;
+    height: 20px;
+    margin: 10px 20px;
+    padding: 10px 20px;
+}
+
+@media screen and (max-width: 720px) {
+    .chapterButtonWrapper{
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
+
+@media screen and (max-width: 600px) {
+    .chapterButtonWrapper{
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
