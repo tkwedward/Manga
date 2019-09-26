@@ -30,59 +30,67 @@ if (mangaBoxExist){
     c.height= height
     document.body.append(c)
 
-
-    let newImg = new Image();
-    let result_data
-    newImg.crossOrigin = '';
-    newImg.onload = async function () {
-        ctx.drawImage(this, 0, 0, width, height);
-        datablob = await c.toDataURL("image/jpeg", 0.5)
-        console.log(datablob)
-        imageList.push(datablob)
-            // imageList.push(ctx.getImageData(0,0, width, height))
-    };
-    newImg.src = originImage.src
-
-    // click next page action
-    function* nextPageGenerator(start=0, end=optionLength, step=1){
-        /*This generator is used to create a list of images on each page*/
-        for (i=start; i< end; i++){
-            let originImage = document.querySelector("#mangaFile")
-            let width = originImage.clientWidth
-            let height = originImage.clientHeight
-            let newImg = new Image();
-            newImg.crossOrigin = '';
-            newImg.onload = async function () {
-                ctx.drawImage(this, 0, 0, width, height);
-                datablob = await c.toDataURL("image/jpeg", 0.5)
-                imageList.push(datablob)
-                next.click()
-            };
-            newImg.src = originImage.src
+    c2 = document.createElement("canvas")
+    ctx2 = c2.getContext("2d")
+    c2.width = width
+    c2.height= height
+    document.body.append(c2)
 
 
-            yield i
-        }
-    }// nextPageGenerator
-    //
-    let nextPageGen = nextPageGenerator()
+    var selectedValue = document.body.querySelector("#pageSelect").value
+    console.log(selectedValue, optionLength)
+    let datablob;
+    let datablob2;
+
     var interval = setInterval(function(){
-        let selectedValue = document.body.querySelector("#pageSelect").value
-        let value = nextPageGen.next().value
-        console.log(selectedValue, optionLength)
+        console.log(datablob==datablob2)
+        let originImage = document.querySelector("#mangaFile")
+        let width = originImage.clientWidth
+        let height = originImage.clientHeight
+        c.width = width
+        c.height= height
+        c2.width = width
+        c2.height= height
+        let newImg = new Image();
+        newImg.crossOrigin = '';
+        newImg.onload = async function () {
+            ctx.drawImage(this, 0, 0, width, height);
+            datablob = await c.toDataURL("image/jpeg", 0.5)
+            imageList.push(datablob)
+            console.log(selectedValue, optionLength)
 
+            ctx2.drawImage(this, 0, 0, width, height);
+            datablob2 = await c.toDataURL("image/jpeg", 0.5)
+        };
+        newImg.src = originImage.src
 
-        // at the end of the page
-        // optionLength=10 // a parameter to stop the looping of page quickly
-        console.log(selectedValue, optionLength)
-        if (selectedValue>=optionLength){
+        if (datablob==datablob2 && datablob!="data:,"){
+            nextButton.click()
+            selectedValue = document.body.querySelector("#pageSelect").value
+        }
+
+        if (optionLength == selectedValue){
             clearInterval(interval)
-            console.log("interval is cleared")
+            console.log("send message")
+            console.log(imageList)
+            document.body.innerHTML = ""
+            imageList.forEach(p=>{
+                let img = document.createElement("img")
+                img.src = p
+                document.body.append(img)
+            })
             chrome.runtime.sendMessage({
                 "todo":"closeChapterTabRequest", "imageList": {[chapterName]:imageList}, "mangaId": mangaId
             }, function(){
                 console.log("send message succuess");
             })
         }
-    }, 2000)
+    }, 1000)
+
+
+
+
+
+
+
 }// if mangaBoxExist

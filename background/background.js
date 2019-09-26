@@ -174,7 +174,7 @@ closeChapterTabRequest
             //
             //
             chrome.storage.local.set(newItem, function(){
-                chrome.tabs.remove(sender.tab.id)
+                // chrome.tabs.remove(sender.tab.id)
                 downloading-=1
             })// set
         })//get
